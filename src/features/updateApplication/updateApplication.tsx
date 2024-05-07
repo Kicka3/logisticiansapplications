@@ -1,22 +1,24 @@
 import { Dispatch, SetStateAction } from 'react'
 
 import { ModeForm, Status } from '@/common/enums/enums'
-import { AddModalForm } from '@/common/ui/modal/addModal'
+import { ModalForm } from '@/common/ui/modal/addModal'
 import { AddFormValues } from '@/common/ui/modal/utils/schema'
 import { useUpdateApplicationMutation } from '@/servies/applications/applications.service'
 import { Application } from '@/servies/types'
 
 type Props = {
   id: string | undefined
+  initialValues?: AddFormValues | undefined
   isOpen: boolean
   setIsOpen: (value: boolean) => void
   setOpenEditeForm?: (value: boolean) => void
-  setTypeForm: Dispatch<SetStateAction<ModeForm>>
+  setTypeForm?: Dispatch<SetStateAction<ModeForm>>
   typeForm: ModeForm
 }
 
 export const UpdateApplication = ({
   id,
+  initialValues,
   isOpen,
   setIsOpen,
   setOpenEditeForm,
@@ -27,13 +29,14 @@ export const UpdateApplication = ({
 
   const onUpdateApplication = async (data: AddFormValues) => {
     const application: Application = {
+      applicationNumber: data.applicationNumber,
       atiCode: data.ATICode,
       carrierFullName: data.CarriersFullName,
       carrierPhone: data.CarrierContactNumber,
       clientCompanyName: data.companyName,
       comment: data.comment,
       date: data.date,
-      status: Status.NEW,
+      status: Status.IN_PROGRESS,
     }
 
     try {
@@ -50,7 +53,8 @@ export const UpdateApplication = ({
       // updateData.status = updatedStatus
 
       await updateApplication({ id, ...application }).unwrap()
-      setOpenEditeForm && setOpenEditeForm(false)
+      // setOpenEditeForm && setOpenEditeForm(false)
+      setIsOpen(false)
     } catch (err) {
       console.error('Ошибка при обновлении заявки:', err)
     }
@@ -59,7 +63,8 @@ export const UpdateApplication = ({
   }
 
   return (
-    <AddModalForm
+    <ModalForm
+      initialValues={initialValues}
       isOpen={isOpen}
       onUpdateApplication={onUpdateApplication}
       setIsOpen={setIsOpen}

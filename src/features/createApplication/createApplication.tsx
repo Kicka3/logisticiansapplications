@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from 'react'
 
 import { ModeForm, Status } from '@/common/enums/enums'
-import { AddModalForm } from '@/common/ui/modal/addModal'
+import { ModalForm } from '@/common/ui/modal/addModal'
 import { AddFormValues } from '@/common/ui/modal/utils/schema'
 import { useCreateApplicationMutation } from '@/servies/applications/applications.service'
 import { Application } from '@/servies/types'
@@ -19,6 +19,7 @@ export const CreateApplication = ({ isOpen, setIsOpen, setTypeForm, typeForm }: 
 
   const onSubmitApplication = (data: AddFormValues) => {
     const application: Application = {
+      applicationNumber: data.applicationNumber,
       atiCode: data.ATICode,
       carrierFullName: data.CarriersFullName,
       carrierPhone: data.CarrierContactNumber,
@@ -33,7 +34,7 @@ export const CreateApplication = ({ isOpen, setIsOpen, setTypeForm, typeForm }: 
   }
 
   return (
-    <AddModalForm
+    <ModalForm
       isOpen={isOpen}
       onSubmitApplication={onSubmitApplication}
       setIsOpen={setIsOpen}

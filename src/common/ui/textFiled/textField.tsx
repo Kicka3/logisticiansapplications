@@ -31,19 +31,10 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
     } = props
 
     const searchVariant = variant === 'search'
-    const passwordVariant = variant === 'password'
 
-    const [inputType] = useState(passwordVariant ? 'password' : 'text')
-    // const [passVisibility, setPassVisibility] = useState(false)
+    const [inputType] = useState('text')
     const [inputValue, setInputValue] = useState('')
     const isShowClearButton = searchVariant && inputValue && !errorMessage
-
-    // const onShowPassword = () => {
-    //   if (passwordVariant) {
-    //     setInputType(state => (state === 'password' ? 'text' : 'password'))
-    //     setPassVisibility(!passVisibility)
-    //   }
-    // }
 
     const onChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
       setInputValue(e.currentTarget.value)
@@ -106,29 +97,8 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
             placeholder={placeholder}
             ref={forwardedRef}
             type={inputType}
-            value={inputValue}
+            // value={inputValue}
           />
-
-          {/*{passwordVariant && (*/}
-          {/*  <div className={classNames.eyeIcon}>*/}
-          {/*    {passVisibility ? (*/}
-          {/*      <EyeOutline*/}
-          {/*        className={classNames.buttonIcon}*/}
-          {/*        height={'20px'}*/}
-          {/*        onClick={onShowPassword}*/}
-          {/*        width={'20px'}*/}
-          {/*      />*/}
-          {/*    ) : (*/}
-          {/*      <EyeOffOutline*/}
-          {/*        className={classNames.buttonIcon}*/}
-          {/*        height={'20px'}*/}
-          {/*        onClick={onShowPassword}*/}
-          {/*        width={'20px'}*/}
-          {/*      />*/}
-          {/*    )}*/}
-          {/*  </div>*/}
-          {/*)}*/}
-
           {isShowClearButton && (
             <button className={classNames.buttonIcon} onClick={clearValue}>
               <Close height={'18px'} width={'18px'} />

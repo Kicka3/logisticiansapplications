@@ -1,5 +1,68 @@
 import z from 'zod'
 
+const dateSchema = z.string().transform(value => {
+  if (value === '') {
+    const now = new Date()
+
+    return now.toLocaleString('ru-RU', {
+      day: '2-digit',
+      hour: '2-digit',
+      hour12: false,
+      minute: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    })
+  }
+
+  // Исправлено для соответствия формату "дд.мм.гггг чч:мм" или "дд.мм.гггг, чч:мм"
+  const dateRegex = /^(\d{2})\.(\d{2})\.(\d{4})(,|\s)(\d{2}):(\d{2})$/
+
+  if (!dateRegex.test(value)) {
+    throw new z.ZodError([
+      {
+        code: 'custom',
+        message: 'Неверный формат даты и времени. Используйте формат дд.мм.гггг чч:мм',
+        path: ['date'],
+      },
+    ])
+  }
+
+  const match = value.match(dateRegex)
+
+  if (!match) {
+    throw new z.ZodError([
+      {
+        code: 'custom',
+        message: 'Неверный формат даты и времени',
+        path: ['date'],
+      },
+    ])
+  }
+
+  const [, day, month, year, hour, minute] = match
+
+  const date = new Date(Number(year), Number(month) - 1, Number(day), Number(hour), Number(minute))
+
+  if (isNaN(date.getTime())) {
+    throw new z.ZodError([
+      {
+        code: 'custom',
+        message: 'Неверный формат даты и времени',
+        path: ['date'],
+      },
+    ])
+  }
+
+  return date.toLocaleString('ru-RU', {
+    day: '2-digit',
+    hour: '2-digit',
+    hour12: false,
+    minute: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  })
+})
+
 const currentDate = new Date()
 
 currentDate.setHours(0, 0, 0, 0)
@@ -10,26 +73,30 @@ export const addFormSchema = z.object({
     .max(10, { message: 'Слишком большой код' }),
   CarrierContactNumber: z
     .string({ message: 'Введите контактный номер' })
-    .regex(/^\d+$/, { message: 'Разрешены только цифры' })
-    .min(11, { message: 'Не корректный номер' })
-    .max(11, { message: 'Не корректный номер' })
+    .regex(/^(\+7|8)\s?\(?(\d{3})\)?\s?(\d{3})-?(\d{2})-?(\d{2})$/, {
+      message: 'Некорректный формат номера телефона',
+    })
     .transform(value => {
       if (!value) {
         return ''
       }
       const phoneNumber = value.replace(/[^\d]/g, '')
+      let formattedNumber = ''
 
-      if (phoneNumber.length < 10) {
-        return phoneNumber
+      if (phoneNumber.startsWith('7') || phoneNumber.startsWith('8')) {
+        formattedNumber = `+7 (${phoneNumber.substring(1, 4)}) ${phoneNumber.substring(
+          4,
+          7
+        )}-${phoneNumber.substring(7, 9)}-${phoneNumber.substring(9, 11)}`
+      } else {
+        formattedNumber = `+7 (${phoneNumber.substring(0, 3)}) ${phoneNumber.substring(
+          3,
+          6
+        )}-${phoneNumber.substring(6, 8)}-${phoneNumber.substring(8, 10)}`
       }
-      const formattedNumber = `+7 (${phoneNumber.substring(1, 4)}) ${phoneNumber.substring(
-        4,
-        7
-      )}-${phoneNumber.substring(7, 9)}-${phoneNumber.substring(9, 11)}`
 
       return formattedNumber
     }),
-
   CarriersFullName: z
     .string()
     .regex(/^[а-яА-ЯёЁ][а-яА-ЯёЁ]*\s[а-яА-ЯёЁ][а-яА-ЯёЁ]*\s[а-яА-ЯёЁ][а-яА-ЯёЁ]*$/, {
@@ -39,8 +106,8 @@ export const addFormSchema = z.object({
     .max(50, { message: 'Некорректный ввод имени' }),
   applicationNumber: z
     .string({ message: 'Введите корректный номер заявки' })
-    .min(4, { message: 'Слишком короткий номер заявки' })
-    .max(10, { message: 'Слишком длинный номер заявки' }),
+    .min(1, { message: 'Слишком короткий номер заявки' })
+    .max(6, { message: 'Слишком длинный номер заявки' }),
   comment: z
     .string()
     .min(6, { message: 'Комментарий минимум 6 символов' })
@@ -49,66 +116,8 @@ export const addFormSchema = z.object({
     .string()
     .min(3, { message: 'Введите минимум 3 символа' })
     .max(21, { message: 'Максимум 10 символов' }),
-  date: z
-    .string()
-    .optional()
-    .transform(value => {
-      if (!value) {
-        const currentDate = new Date()
-        const formattedDate = currentDate.toLocaleDateString('ru-RU').replace(/\//g, '.')
-        const formattedTime = currentDate.toLocaleTimeString('ru-RU', {
-          hour: '2-digit',
-          minute: '2-digit',
-        })
 
-        return `${formattedDate} ${formattedTime}`
-      }
-
-      return value
-    })
-    .superRefine((value, ctx) => {
-      if (value && !/^\d{2}\.\d{2}\.\d{4} \d{2}:\d{2}$/.test(value)) {
-        ctx.addIssue({
-          code: 'custom',
-          message: 'Неверный формат даты и времени',
-        })
-      }
-    })
-    .transform(value => {
-      if (!value) {
-        const currentDate = new Date()
-
-        return currentDate.toLocaleString('ru-RU', {
-          day: '2-digit',
-          hour: '2-digit',
-          hour12: false,
-          minute: '2-digit',
-          month: '2-digit',
-          year: 'numeric',
-        })
-      }
-      const [day, month, year, hour, minute] = value.split(/\.|:|\s/).map(Number)
-      const date = new Date(year, month - 1, day, hour, minute)
-
-      return date.toLocaleString('ru-RU', {
-        day: '2-digit',
-        hour: '2-digit',
-        hour12: false,
-        minute: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-      })
-    }),
-  statusApp: z
-    .string()
-    .regex(/^(Новая|В работе|Завершено)$/, { message: 'Недопустимое значение' })
-    .transform(value => {
-      return value
-        .toLowerCase()
-        .split(' ')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ')
-    })
-    .optional(),
+  date: dateSchema,
 })
+
 export type AddFormValues = z.infer<typeof addFormSchema>

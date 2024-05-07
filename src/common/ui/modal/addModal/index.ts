@@ -1,1 +1,1 @@
-export * from './addModalForm'
+export * from './modalForm'

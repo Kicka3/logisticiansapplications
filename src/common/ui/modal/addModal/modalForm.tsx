@@ -12,17 +12,16 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import s from './addModalForm.module.scss'
 
 type Props = {
-  initialValues?: AddFormValues
+  initialValues?: AddFormValues | undefined
   isOpen: boolean
   onSubmitApplication?: (data: AddFormValues) => void
   onUpdateApplication?: (data: AddFormValues) => void
   setIsOpen: (value: boolean) => void
-  // setTypeForm: (value: string) => void
-  setTypeForm: Dispatch<SetStateAction<ModeForm>>
-  typeForm: string
+  setTypeForm?: Dispatch<SetStateAction<ModeForm>>
+  typeForm: ModeForm
 }
 
-export const AddModalForm = ({
+export const ModalForm = ({
   initialValues,
   isOpen,
   onSubmitApplication,
@@ -37,25 +36,18 @@ export const AddModalForm = ({
     handleSubmit,
     reset,
   } = useForm<AddFormValues>({
-    defaultValues: initialValues || {
-      ATICode: '',
-      CarrierContactNumber: '',
-      CarriersFullName: '',
-      applicationNumber: '',
-      comment: '',
-      companyName: '',
-    },
+    defaultValues: initialValues,
     resolver: zodResolver(addFormSchema),
   })
 
   const onSubmit = (data: AddFormValues) => {
     setIsOpen(false)
-    setTypeForm(ModeForm.ADD)
+    setTypeForm && setTypeForm(ModeForm.ADD)
 
     if (onSubmitApplication && typeForm !== ModeForm.UPDATE) {
       onSubmitApplication(data)
-    } else if (typeForm === ModeForm.UPDATE) {
-      onUpdateApplication && onUpdateApplication(data)
+    } else if (onUpdateApplication && typeForm === ModeForm.UPDATE) {
+      onUpdateApplication(data)
     }
 
     reset()
@@ -66,7 +58,7 @@ export const AddModalForm = ({
   }
 
   const handleCloseModal = () => {
-    setTypeForm(ModeForm.ADD)
+    setTypeForm && setTypeForm(ModeForm.ADD)
     setIsOpen(false)
     reset()
   }
@@ -76,7 +68,14 @@ export const AddModalForm = ({
 
   return (
     <>
-      <Button onClick={handleOpenModal}>Создать заявку</Button>
+      <Button
+        className={s.createAppBtn}
+        onClick={handleOpenModal}
+        size={'l'}
+        view={'outlined-action'}
+      >
+        Создать заявку
+      </Button>
       <ThemeProvider>
         <Modal
           aria-label={'addNewApplication'}
@@ -94,7 +93,7 @@ export const AddModalForm = ({
               <form className={s.modalForm} onSubmit={handleSubmit(onSubmit)}>
                 <ControlledTextField
                   control={control}
-                  defaultValue={initialValues?.applicationNumber}
+                  // defaultValue={initialValues?.applicationNumber}
                   errorMessage={errors.applicationNumber?.message}
                   label={'Номер завяки'}
                   name={'applicationNumber'}
@@ -103,16 +102,14 @@ export const AddModalForm = ({
                 />
                 <ControlledTextField
                   control={control}
-                  defaultValue={initialValues?.date}
                   errorMessage={errors.date?.message}
                   label={'Дата получения заявки от клиента (дд.мм.гггг чч:мм)'}
                   name={'date'}
-                  pattern={'\\d{2}\\.\\d{2}\\.\\d{4} \\d{2}:\\d{2}'}
+                  pattern={'\\d{2}\\.\\d{2}\\.\\d{4}(,|\\s)\\d{2}:\\d{2}'} // Паттерн для валидации ввода
                   variant={'default'}
                 />
                 <ControlledTextField
                   control={control}
-                  defaultValue={initialValues?.companyName}
                   errorMessage={errors.companyName?.message}
                   label={'Название фирмы клиента'}
                   name={'companyName'}
@@ -120,7 +117,6 @@ export const AddModalForm = ({
                 />
                 <ControlledTextField
                   control={control}
-                  defaultValue={initialValues?.CarriersFullName}
                   errorMessage={errors.CarriersFullName?.message}
                   label={'ФИО перевозчика'}
                   name={'CarriersFullName'}
@@ -128,7 +124,6 @@ export const AddModalForm = ({
                 />
                 <ControlledTextField
                   control={control}
-                  defaultValue={initialValues?.CarrierContactNumber}
                   errorMessage={errors.CarrierContactNumber?.message}
                   label={'Контактный телефон перевозчика'}
                   name={'CarrierContactNumber'}
@@ -137,7 +132,6 @@ export const AddModalForm = ({
                 />
                 <ControlledTextField
                   control={control}
-                  defaultValue={initialValues?.ATICode}
                   errorMessage={errors.ATICode?.message}
                   label={'ATI код сети перевозчика'}
                   name={'ATICode'}
@@ -156,7 +150,6 @@ export const AddModalForm = ({
                 {/*)}*/}
                 <ControlledTextField
                   control={control}
-                  defaultValue={initialValues?.comment}
                   errorMessage={errors.comment?.message}
                   label={'Комментарии'}
                   name={'comment'}

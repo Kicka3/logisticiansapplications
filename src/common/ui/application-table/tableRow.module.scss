@@ -4,39 +4,11 @@
   height: 100vh;
 }
 
-//Спизженные стили с сайта
+.applicationsCount {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 
-//.row {
-//  /* общие стили для всех строк таблицы */
-//}
-//
-//.new {
-//  /* стили для строк с новыми заявками */
-//  color: #8c61ff;
-//}
-//
-//.inProgress {
-//  /* стили для строк с заявками в работе */
-//  color: yellow;
-//}
-//
-//.completed {
-//  /* стили для строк с завершенными заявками */
-//  color: green;
-//}
-
-//.table {
-//  thead {
-//    background-color: blue;
-//  }
-//
-//  tbody {
-//    tr:nth-child(odd) {
-//      background-color: gray;
-//    }
-//
-//    tr:nth-child(even) {
-//      background-color: rgb(138 43 226 / 82%);
-//    }
-//  }
-//}
+  margin-bottom: 10px;
+}

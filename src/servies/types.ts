@@ -1,6 +1,7 @@
 import { Status } from '@/common/enums/enums'
 
 export type Application = {
+  applicationNumber: string
   atiCode: string
   carrierFullName: string
   carrierPhone: string
@@ -23,16 +24,4 @@ export type GetAppArgs = {
 
 export type IdAppRequest = {
   id: string
-}
-
-export type MyAddFormValues = {
-  ATICode: string
-  CarrierContactNumber: string
-  CarriersFullName: string
-  applicationNumber: string
-  comment: string
-  companyName: string
-  date: string
-  id?: string | undefined // Добавляем id как опциональное свойство
-  statusApp: string
 }

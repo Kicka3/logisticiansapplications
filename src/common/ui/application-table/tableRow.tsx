@@ -1,146 +1,9 @@
-// import { useEffect, useMemo, useState } from 'react'
-//
-// import { ModeForm, Status } from '@/common/enums/enums'
-// import { CheckboxAction } from '@/common/ui/checkbox/CheckboxAction'
-// import { CreateApplication } from '@/features/createApplication'
-// import { DeleteApplication } from '@/features/deleteApplication/deleteApplication'
-// import {
-//   useDeleteApplicationMutation,
-//   useGetApplicationsQuery,
-// } from '@/servies/applications/applications.service'
-// import { Application } from '@/servies/types'
-// import { DeleteTitleAppModalForm } from '@/servies/utils/constant'
-// import { Table, TableColumnConfig } from '@gravity-ui/uikit'
-//
-// import s from './tableRow.module.scss'
-//
-// //Возможно полная хуйня
-// const columns: TableColumnConfig<Application>[] = [
-//   {
-//     className: s.headPadding,
-//     id: 'id',
-//     name: 'ID заявки',
-//   },
-//   {
-//     className: s.headPadding,
-//     id: 'date',
-//     name: 'Дата и время получения заявки от клиента',
-//   },
-//   {
-//     className: s.headPadding,
-//     id: 'clientCompanyName',
-//     name: 'Название фирмы клиента',
-//   },
-//   {
-//     className: s.headPadding,
-//     id: 'carrierFullName',
-//     name: 'ФИО перевозчика',
-//   },
-//   {
-//     className: s.headPadding,
-//     id: 'carrierPhone',
-//     name: 'Контактный телефон перевозчика',
-//   },
-//   {
-//     className: s.headPadding,
-//     id: 'comment',
-//     name: 'Комментарии',
-//   },
-//   {
-//     className: s.headPadding,
-//     id: 'status',
-//     name: 'Статус заявки',
-//   },
-//   {
-//     className: s.headPadding,
-//     id: 'atiCode',
-//     name: 'ATI код сети перевозчика',
-//     template: getApplications => (
-//       <a
-//         href={`https://ati.su/firms/${getApplications?.atiCode}/info`}
-//         rel={'noopener noreferrer'}
-//         target={'_blank'}
-//       >
-//         {getApplications?.atiCode}
-//       </a>
-//     ),
-//   },
-// ]
-//
-// //Возможно полная хуйня
-// const getRowClassNames = (item: Application) => {
-//   const classes = [s.row]
-//
-//   if (item?.status === Status.NEW) {
-//     classes.push(s.new)
-//   } else if (item?.status === Status.IN_PROGRESS) {
-//     classes.push(s.inProgress)
-//   } else if (item?.status === Status.COMPLETED) {
-//     classes.push(s.completed)
-//   }
-//
-//   return classes
-// }
-//
-// export const TableRow = () => {
-//   const { data, isLoading } = useGetApplicationsQuery()
-//   const [deleteApplication] = useDeleteApplicationMutation()
-//
-//   const [applicationCount, setApplicationCount] = useState(0)
-//
-//   const applicationCountMemo = useMemo(() => {
-//     return data?.length || 0
-//   }, [data])
-//
-//   useEffect(() => {
-//     setApplicationCount(applicationCountMemo)
-//   }, [applicationCountMemo])
-//
-//   const [typeForm, setTypeForm] = useState(ModeForm.ADD)
-//
-//   if (isLoading) {
-//     return (
-//       <h1 style={{ alignItems: 'center', display: 'flex', justifyContent: 'center' }}>
-//         LOADING...
-//       </h1>
-//     )
-//   }
-//
-//   const toggleModeHandler = () => {
-//     setTypeForm(typeForm === ModeForm.ADD ? ModeForm.UPDATE : ModeForm.ADD)
-//   }
-//
-//   return (
-//     <div className={s.applicationsTable}>
-//       <div className={s.applicationsCount}>Количество заявок: {applicationCount}</div>
-//       <Table
-//         columns={columns}
-//         data={data}
-//         edgePadding
-//         emptyMessage={'no data'}
-//         getRowClassNames={getRowClassNames}
-//         verticalAlign={'top'}
-//         wordWrap
-//       />
-//       <CheckboxAction />
-//       <CreateApplication
-//         // title={AddTitleAppModalForm}
-//         typeForm={typeForm}
-//       />
-//       <DeleteApplication title={DeleteTitleAppModalForm} />
-//       <button onClick={toggleModeHandler} style={{ backgroundColor: 'transparent' }}>
-//         {typeForm === ModeForm.ADD ? 'Switch to UPDATE mode' : 'Switch to ADD mode'}
-//       </button>
-//     </div>
-//   )
-//-----------------------------------------------------------------------
-
-//TESTINGS1 with actions
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { ModeForm } from '@/common/enums/enums'
 import { DeleteModalForm } from '@/common/ui/modal/deleteModal'
+import { AddFormValues } from '@/common/ui/modal/utils/schema'
 import { CreateApplication } from '@/features/createApplication'
 import { UpdateApplication } from '@/features/updateApplication'
 import {
@@ -156,15 +19,18 @@ import {
   withTableActions,
 } from '@gravity-ui/uikit'
 
+import s from './tableRow.module.scss'
+
 const MyTable = withTableActions(Table)
 
 export const TableRow: React.FC = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-  const [selectedId, setSelectedId] = useState<string>('')
-  const [typeForm, setTypeForm] = useState(ModeForm.ADD)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [selectedId, setSelectedId] = useState<string>('')
+  // const [initialValues, setInitialValues] = useState<AddFormValues | undefined>(undefined)
+  const [typeForm, setTypeForm] = useState(ModeForm.ADD)
 
-  const { data, isLoading } = useGetApplicationsQuery()
+  const { data: applications, isLoading } = useGetApplicationsQuery()
   const [deleteApplication] = useDeleteApplicationMutation()
 
   const navigate = useNavigate()
@@ -173,14 +39,22 @@ export const TableRow: React.FC = () => {
     navigate(`/application/${id}`)
   }
 
+  const applicationsArr = Array.isArray(applications) ? applications : [applications]
+  const applicationCount = applicationsArr?.length || 0
+
   const columns: TableColumnConfig<TableDataItem>[] = [
     {
       id: 'id',
       name: 'ID заявки',
     },
+
     {
       id: 'date',
       name: 'Дата и время получения заявки от клиента',
+    },
+    {
+      id: 'applicationNumber',
+      name: 'Номер заявки',
     },
     {
       id: 'clientCompanyName',
@@ -262,27 +136,29 @@ export const TableRow: React.FC = () => {
 
   return (
     <div>
-      {typeForm === 'add' ? (
-        <CreateApplication
-          isOpen={isEditModalOpen}
-          setIsOpen={setIsEditModalOpen}
-          setTypeForm={setTypeForm}
-          typeForm={typeForm}
-        />
-      ) : (
-        <UpdateApplication
-          id={selectedId}
-          isOpen={isEditModalOpen}
-          setIsOpen={setIsEditModalOpen}
-          // setOpenEditeForm={setOpenEditeForm}
-          setTypeForm={setTypeForm}
-          typeForm={ModeForm.UPDATE}
-        />
-      )}
+      <div className={s.applicationsCount}>
+        Количество заявок: {applicationCount}
+        {typeForm === 'add' ? (
+          <CreateApplication
+            isOpen={isEditModalOpen}
+            setIsOpen={setIsEditModalOpen}
+            setTypeForm={setTypeForm}
+            typeForm={typeForm}
+          />
+        ) : (
+          <UpdateApplication
+            id={selectedId}
+            isOpen={isEditModalOpen}
+            setIsOpen={setIsEditModalOpen}
+            setTypeForm={setTypeForm}
+            typeForm={ModeForm.UPDATE}
+          />
+        )}
+      </div>
       <MyTable
         columns={columns}
         //TableDataItem[] Ошибка в типизации
-        data={data}
+        data={applications}
         getRowActions={getRowActions}
         // getRowId={getRowId}
         //Это для чекбоксов
