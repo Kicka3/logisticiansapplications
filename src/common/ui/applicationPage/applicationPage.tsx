@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { ModeForm } from '@/common/enums/enums'
@@ -10,10 +11,13 @@ import {
   useDeleteApplicationMutation,
   useGetApplicationsByIdQuery,
 } from '@/servies/applications/applications.service'
+import { selectIsAdmin } from '@/servies/auth-reducer/authSelector'
 
 import s from './applicationPage.module.scss'
 
 export const ApplicationPage = () => {
+  const isAdmin = useSelector(selectIsAdmin)
+
   const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
 
@@ -70,16 +74,22 @@ export const ApplicationPage = () => {
         <Typography
           variant={'h1'}
         >{`Информация о заявке # ${application.applicationNumber}`}</Typography>
+
         <div className={s.btnGroupWrapper}>
           <button className={s.backButton} onClick={onBack}>
             Назад
           </button>
-          <button className={s.editButton} onClick={onEditeApp}>
-            Редактировать
-          </button>
-          <button className={s.deleteButton} onClick={onDeleteApp}>
-            Удалить
-          </button>
+
+          {isAdmin && (
+            <>
+              <button className={s.editButton} onClick={onEditeApp}>
+                Редактировать
+              </button>
+              <button className={s.deleteButton} onClick={onDeleteApp}>
+                Удалить
+              </button>
+            </>
+          )}
         </div>
       </header>
       <main className={s.main}>

@@ -38,7 +38,9 @@ export const DeleteModalForm = ({
           open={isDeleteModalOpen}
         >
           <div className={s.contentWrapper}>
-            <Typography variant={'body1'}>{`Do you really want to remove ${title} ?`}</Typography>
+            <Typography
+              variant={'body1'}
+            >{`Вы действительно хотите удалить заявку № ${title} ?`}</Typography>
             <div className={s.modalContent}>
               <div className={s.btnGroup}>
                 <Button

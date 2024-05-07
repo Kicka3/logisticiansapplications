@@ -1,4 +1,7 @@
 import z from 'zod'
+const currentDate = new Date()
+const statusRegex = /^(В работе|Завершено|Новая)$/
+const dateRegex = /^(\d{2})\.(\d{2})\.(\d{4})(,|\s)(\d{2}):(\d{2})$/
 
 const dateSchema = z.string().transform(value => {
   if (value === '') {
@@ -13,9 +16,6 @@ const dateSchema = z.string().transform(value => {
       year: 'numeric',
     })
   }
-
-  // Исправлено для соответствия формату "дд.мм.гггг чч:мм" или "дд.мм.гггг, чч:мм"
-  const dateRegex = /^(\d{2})\.(\d{2})\.(\d{4})(,|\s)(\d{2}):(\d{2})$/
 
   if (!dateRegex.test(value)) {
     throw new z.ZodError([
@@ -61,12 +61,6 @@ const dateSchema = z.string().transform(value => {
     month: '2-digit',
     year: 'numeric',
   })
-})
-
-const currentDate = new Date()
-
-export const AppStatusEnum = z.enum(['В работе', 'Завершено', 'Новая'], {
-  message: 'Некорректный статус',
 })
 
 currentDate.setHours(0, 0, 0, 0)
@@ -121,7 +115,7 @@ export const addFormSchema = z.object({
     .min(3, { message: 'Введите минимум 3 символа' })
     .max(21, { message: 'Максимум 10 символов' }),
   date: dateSchema,
-  statusApp: AppStatusEnum,
+  statusApp: z.string().regex(statusRegex).optional().or(z.literal('')),
 })
 
 export type AddFormValues = z.infer<typeof addFormSchema>
