@@ -1,10 +1,11 @@
 import { Dispatch, SetStateAction } from 'react'
 
-import { ModeForm, Status } from '@/common/enums/enums'
+import { ModeForm } from '@/common/enums/enums'
 import { ModalForm } from '@/common/ui/modal/addModal'
 import { AddFormValues } from '@/common/ui/modal/utils/schema'
 import { useCreateApplicationMutation } from '@/servies/applications/applications.service'
 import { Application } from '@/servies/types'
+import { STATUS_NEW } from '@/servies/utils/constants'
 import { generateId } from '@/servies/utils/generateId'
 
 type Props = {
@@ -27,7 +28,7 @@ export const CreateApplication = ({ isOpen, setIsOpen, setTypeForm, typeForm }: 
       comment: data.comment,
       date: data.date,
       id: generateId(),
-      status: Status.NEW,
+      status: STATUS_NEW,
     }
 
     createApplication(application)

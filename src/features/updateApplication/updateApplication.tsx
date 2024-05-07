@@ -1,10 +1,11 @@
 import { Dispatch, SetStateAction } from 'react'
 
-import { ModeForm, Status } from '@/common/enums/enums'
+import { ModeForm } from '@/common/enums/enums'
 import { ModalForm } from '@/common/ui/modal/addModal'
 import { AddFormValues } from '@/common/ui/modal/utils/schema'
 import { useUpdateApplicationMutation } from '@/servies/applications/applications.service'
 import { Application } from '@/servies/types'
+import { STATUS_NEW } from '@/servies/utils/constants'
 
 type Props = {
   id: string | undefined
@@ -27,6 +28,14 @@ export const UpdateApplication = ({
   const [updateApplication] = useUpdateApplicationMutation()
 
   const onUpdateApplication = async (data: AddFormValues) => {
+    let applicationStatus: string
+
+    if (typeForm === ModeForm.UPDATE) {
+      applicationStatus = data.statusApp
+    } else {
+      applicationStatus = STATUS_NEW
+    }
+
     const application: Application = {
       applicationNumber: data.applicationNumber,
       atiCode: data.ATICode,
@@ -35,24 +44,11 @@ export const UpdateApplication = ({
       clientCompanyName: data.companyName,
       comment: data.comment,
       date: data.date,
-      status: Status.IN_PROGRESS,
+      status: applicationStatus,
     }
 
     try {
-      // Проверяем, есть ли новый статус в полях ввода
-      // const newStatus = data.statusApp
-      // let updatedStatus = Status.NEW // По умолчанию используем статус 'Новая'
-      //
-      // // Проверяем, является ли новый статус допустимым значением из enum Status
-      // if (Object.values(Status).includes(newStatus)) {
-      //   updatedStatus = newStatus
-      // }
-      //
-      // // Обновляем статус в объекте updateData перед отправкой запроса
-      // updateData.status = updatedStatus
-
       await updateApplication({ id, ...application }).unwrap()
-      // setOpenEditeForm && setOpenEditeForm(false)
       setIsOpen(false)
     } catch (err) {
       console.error('Ошибка при обновлении заявки:', err)

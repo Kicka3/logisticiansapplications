@@ -38,7 +38,7 @@ const dateSchema = z.string().transform(value => {
       },
     ])
   }
-
+  //** separator - нужен для разделения времени */
   const [, day, month, year, separator, hour, minute] = match
 
   const date = new Date(Number(year), Number(month) - 1, Number(day), Number(hour), Number(minute))
@@ -64,6 +64,10 @@ const dateSchema = z.string().transform(value => {
 })
 
 const currentDate = new Date()
+
+export const AppStatusEnum = z.enum(['В работе', 'Завершено', 'Новая'], {
+  message: 'Некорректный статус',
+})
 
 currentDate.setHours(0, 0, 0, 0)
 export const addFormSchema = z.object({
@@ -116,8 +120,8 @@ export const addFormSchema = z.object({
     .string()
     .min(3, { message: 'Введите минимум 3 символа' })
     .max(21, { message: 'Максимум 10 символов' }),
-
   date: dateSchema,
+  statusApp: AppStatusEnum,
 })
 
 export type AddFormValues = z.infer<typeof addFormSchema>

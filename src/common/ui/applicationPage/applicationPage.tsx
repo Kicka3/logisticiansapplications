@@ -39,7 +39,7 @@ export const ApplicationPage = () => {
       comment: application.comment,
       companyName: application.clientCompanyName,
       date: application.date,
-      // statusApp: item.status, // Убедитесь, что статус также передается, если он является частью формы
+      statusApp: application.status, // Убедитесь, что статус также передается, если он является частью формы
     })
   }
 

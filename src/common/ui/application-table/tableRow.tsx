@@ -9,7 +9,7 @@ import {
   useDeleteApplicationMutation,
   useGetApplicationsQuery,
 } from '@/servies/applications/applications.service'
-import { DeleteTitleAppModalForm } from '@/servies/utils/constant'
+import { DeleteTitleAppModalForm } from '@/servies/utils/constants'
 import {
   Table,
   TableActionConfig,
@@ -52,6 +52,10 @@ export const TableRow: React.FC = () => {
       name: 'Дата и время получения заявки от клиента',
     },
     {
+      id: 'status',
+      name: 'Статус заявки',
+    },
+    {
       id: 'applicationNumber',
       name: 'Номер заявки',
     },
@@ -70,10 +74,6 @@ export const TableRow: React.FC = () => {
     {
       id: 'comment',
       name: 'Комментарии',
-    },
-    {
-      id: 'status',
-      name: 'Статус заявки',
     },
     {
       id: 'atiCode',

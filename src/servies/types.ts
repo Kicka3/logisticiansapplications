@@ -1,4 +1,4 @@
-import { Status } from '@/common/enums/enums'
+export type AppStatus = 'В работе' | 'Завершено' | 'Новая'
 
 export type Application = {
   applicationNumber: string
@@ -9,7 +9,7 @@ export type Application = {
   comment: string
   date: string
   id?: string
-  status: Status
+  status: string
 }
 
 export type ApplicationsResponse = Application[]
@@ -19,7 +19,7 @@ export type GetAppArgs = {
   carrierFullName?: string
   clientCompanyName?: string
   id?: string
-  status?: Status
+  status?: AppStatus
 }
 
 export type IdAppRequest = {

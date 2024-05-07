@@ -5,7 +5,13 @@ import { ModeForm } from '@/common/enums/enums'
 import { ControlledTextField } from '@/common/ui/controlled/controlledtextField/controlledTextFiled'
 import { AddFormValues, addFormSchema } from '@/common/ui/modal/utils/schema'
 import { Typography } from '@/common/ui/typography'
-import { AddTitleAppModalForm, UpdateTitleAppModalForm } from '@/servies/utils/constant'
+import {
+  AddTitleAppModalForm,
+  STATUS_COMPLETED,
+  STATUS_IN_PROGRESS,
+  STATUS_NEW,
+  UpdateTitleAppModalForm,
+} from '@/servies/utils/constants'
 import { Button, Modal, ThemeProvider } from '@gravity-ui/uikit'
 import { zodResolver } from '@hookform/resolvers/zod'
 
@@ -36,7 +42,16 @@ export const ModalForm = ({
     handleSubmit,
     reset,
   } = useForm<AddFormValues>({
-    defaultValues: initialValues,
+    defaultValues: initialValues || {
+      ATICode: '',
+      CarrierContactNumber: '',
+      CarriersFullName: '',
+      applicationNumber: '',
+      comment: '',
+      companyName: '',
+      date: '',
+      statusApp: '',
+    },
     resolver: zodResolver(addFormSchema),
   })
 
@@ -137,15 +152,15 @@ export const ModalForm = ({
                   type={'number'}
                   variant={'default'}
                 />
-                {/*{typeForm === 'upd' && (*/}
-                {/*  <ControlledTextField*/}
-                {/*    control={control}*/}
-                {/*    errorMessage={errors.statusApp?.message}*/}
-                {/*    label={`Статус заявки: '${Status.NEW}', '${Status.IN_PROGRESS}', '${Status.COMPLETED}','`}*/}
-                {/*    name={'statusApp'}*/}
-                {/*    variant={'default'}*/}
-                {/*  />*/}
-                {/*)}*/}
+                {typeForm === 'upd' && (
+                  <ControlledTextField
+                    control={control}
+                    errorMessage={errors.statusApp?.message}
+                    label={`Статус заявки: '${STATUS_NEW}', '${STATUS_IN_PROGRESS}', '${STATUS_COMPLETED}','`}
+                    name={'statusApp'}
+                    variant={'default'}
+                  />
+                )}
                 <ControlledTextField
                   control={control}
                   errorMessage={errors.comment?.message}
