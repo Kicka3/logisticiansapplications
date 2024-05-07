@@ -1,24 +1,41 @@
-import { FieldValues, UseControllerProps, useController } from 'react-hook-form'
+import { Control, Controller } from 'react-hook-form'
 
-import { TextField, TextFieldProps } from '@/common/ui/textFiled'
+import { AddFormValues } from '@/common/ui/modal/utils/schema'
+import { TextField } from '@/common/ui/textFiled'
 
-type ControlledTextFieldProps<T extends FieldValues> = Omit<
-  UseControllerProps<T>,
-  'disabled' | 'rules'
-> &
-  Omit<TextFieldProps, 'checked' | 'onChange'>
+type Props = {
+  control: Control<AddFormValues>
+  errorMessage?: string
+  label: string
+  name: keyof AddFormValues
+  pattern?: string
+  type?: string
+  variant: 'default'
+}
 
-export const ControlledTextField = <T extends FieldValues>({
+export const ControlledTextField = ({
   control,
-  shouldUnregister,
-  ...rest
-}: ControlledTextFieldProps<T>) => {
-  const { field } = useController({
-    control,
-    disabled: rest.disabled,
-    name: rest.name,
-    shouldUnregister,
-  })
-
-  return <TextField {...rest} {...field} />
+  errorMessage,
+  label,
+  name,
+  pattern,
+  type,
+  variant,
+}: Props) => {
+  return (
+    <Controller
+      control={control}
+      name={name}
+      render={({ field }) => (
+        <TextField
+          {...field}
+          errorMessage={errorMessage}
+          label={label}
+          pattern={pattern}
+          type={type}
+          variant={variant}
+        />
+      )}
+    />
+  )
 }

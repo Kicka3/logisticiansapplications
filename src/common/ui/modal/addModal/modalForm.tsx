@@ -93,7 +93,6 @@ export const ModalForm = ({
               <form className={s.modalForm} onSubmit={handleSubmit(onSubmit)}>
                 <ControlledTextField
                   control={control}
-                  // defaultValue={initialValues?.applicationNumber}
                   errorMessage={errors.applicationNumber?.message}
                   label={'Номер завяки'}
                   name={'applicationNumber'}
@@ -141,7 +140,6 @@ export const ModalForm = ({
                 {/*{typeForm === 'upd' && (*/}
                 {/*  <ControlledTextField*/}
                 {/*    control={control}*/}
-                {/*    defaultValue={initialValues?.comment}*/}
                 {/*    errorMessage={errors.statusApp?.message}*/}
                 {/*    label={`Статус заявки: '${Status.NEW}', '${Status.IN_PROGRESS}', '${Status.COMPLETED}','`}*/}
                 {/*    name={'statusApp'}*/}

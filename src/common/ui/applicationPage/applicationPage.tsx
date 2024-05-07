@@ -2,10 +2,14 @@ import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { ModeForm } from '@/common/enums/enums'
+import { DeleteModalForm } from '@/common/ui/modal/deleteModal'
 import { AddFormValues } from '@/common/ui/modal/utils/schema'
 import { Typography } from '@/common/ui/typography'
 import { UpdateApplication } from '@/features/updateApplication'
-import { useGetApplicationsByIdQuery } from '@/servies/applications/applications.service'
+import {
+  useDeleteApplicationMutation,
+  useGetApplicationsByIdQuery,
+} from '@/servies/applications/applications.service'
 
 import s from './applicationPage.module.scss'
 
@@ -15,11 +19,13 @@ export const ApplicationPage = () => {
 
   const [openEditeForm, setOpenEditeForm] = useState(false)
   const [initialValues, setInitialValues] = useState<AddFormValues | undefined>(undefined)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 
   const { data: application, isLoading } = useGetApplicationsByIdQuery({ id })
+  const [deleteApplication] = useDeleteApplicationMutation()
 
   if (!application) {
-    return <h1>Application not found</h1>
+    return <Typography variant={'h1'}>Application not found</Typography>
   }
 
   const onEditeApp = async () => {
@@ -35,6 +41,19 @@ export const ApplicationPage = () => {
       date: application.date,
       // statusApp: item.status, // Убедитесь, что статус также передается, если он является частью формы
     })
+  }
+
+  const onDeleteApp = () => {
+    setIsDeleteModalOpen(true)
+  }
+
+  const onDeleteApplication = async () => {
+    try {
+      id && (await deleteApplication({ id }).unwrap())
+      navigate('/')
+    } catch (err) {
+      console.log('Ошибка при удалении заявки:', err)
+    }
   }
 
   if (isLoading) {
@@ -58,7 +77,9 @@ export const ApplicationPage = () => {
           <button className={s.editButton} onClick={onEditeApp}>
             Редактировать
           </button>
-          <button className={s.deleteButton}>Удалить</button>
+          <button className={s.deleteButton} onClick={onDeleteApp}>
+            Удалить
+          </button>
         </div>
       </header>
       <main className={s.main}>
@@ -114,6 +135,13 @@ export const ApplicationPage = () => {
           typeForm={ModeForm.UPDATE}
         />
       )}
+      <DeleteModalForm
+        isDeleteModalOpen={isDeleteModalOpen}
+        onDeleteApplication={onDeleteApplication}
+        setIsDeleteModalOpen={setIsDeleteModalOpen}
+        // title={DeleteTitleAppModalForm}
+        title={application?.applicationNumber || ''}
+      />
     </div>
   )
 }

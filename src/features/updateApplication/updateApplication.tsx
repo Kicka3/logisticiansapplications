@@ -21,7 +21,6 @@ export const UpdateApplication = ({
   initialValues,
   isOpen,
   setIsOpen,
-  setOpenEditeForm,
   setTypeForm,
   typeForm,
 }: Props) => {

@@ -39,7 +39,7 @@ const dateSchema = z.string().transform(value => {
     ])
   }
 
-  const [, day, month, year, hour, minute] = match
+  const [, day, month, year, separator, hour, minute] = match
 
   const date = new Date(Number(year), Number(month) - 1, Number(day), Number(hour), Number(minute))
 

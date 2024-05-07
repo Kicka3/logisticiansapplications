@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 
 import { ModeForm } from '@/common/enums/enums'
 import { DeleteModalForm } from '@/common/ui/modal/deleteModal'
-import { AddFormValues } from '@/common/ui/modal/utils/schema'
 import { CreateApplication } from '@/features/createApplication'
 import { UpdateApplication } from '@/features/updateApplication'
 import {
@@ -27,7 +26,6 @@ export const TableRow: React.FC = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [selectedId, setSelectedId] = useState<string>('')
-  // const [initialValues, setInitialValues] = useState<AddFormValues | undefined>(undefined)
   const [typeForm, setTypeForm] = useState(ModeForm.ADD)
 
   const { data: applications, isLoading } = useGetApplicationsQuery()
@@ -39,6 +37,7 @@ export const TableRow: React.FC = () => {
     navigate(`/application/${id}`)
   }
 
+  /** Counter */
   const applicationsArr = Array.isArray(applications) ? applications : [applications]
   const applicationCount = applicationsArr?.length || 0
 
@@ -99,14 +98,6 @@ export const TableRow: React.FC = () => {
           handleOpen(item?.id)
         },
         text: 'Посмотреть',
-      },
-      {
-        handler: () => {
-          setSelectedId(item.id as string)
-          setIsEditModalOpen(true)
-          setTypeForm(ModeForm.UPDATE)
-        },
-        text: 'Изменить',
       },
       {
         handler: () => {
