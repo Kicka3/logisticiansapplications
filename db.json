@@ -1,0 +1,125 @@
+{
+  "applications": [
+    {
+      "atiCode": "22831",
+      "carrierFullName": "Иванов Иван Иванович",
+      "carrierPhone": "+7 (953) 176-23-45",
+      "clientCompanyName": "ООО Ромашка",
+      "comment": "Нужно перевезти груз из Еревана в Санкт-Петербург",
+      "date": "02.04.2024, 10:37",
+      "id": "123452",
+      "applicationNumber": "1",
+      "status": "В работе"
+    },
+    {
+      "atiCode": "67890",
+      "carrierFullName": "Петров Петр Петрович",
+      "carrierPhone": "+7 (922) 192-10-50",
+      "clientCompanyName": "ООО Львиная доля",
+      "comment": "Нужно перевезти груз из Казани в Екатеринбург",
+      "date": "05.04.2024, 08:05",
+      "id": "213415",
+      "applicationNumber": "2",
+      "status": "В работе"
+    },
+    {
+      "atiCode": "111213",
+      "carrierFullName": "Сидоров Сергей Сергеевич",
+      "carrierPhone": "+7 (932) 019-10-10",
+      "clientCompanyName": "ООО Солнечный ветер",
+      "comment": "Нужно перевезти груз из Краснодара в Ростов-на-Дону",
+      "date": "08.04.2024, 11:11",
+      "id": "213321",
+      "applicationNumber": "3",
+      "status": "Завершено"
+    },
+    {
+      "atiCode": "12346",
+      "carrierFullName": "Федоров Александр Александрович",
+      "carrierPhone": "+7 (904) 041-28-91",
+      "clientCompanyName": "ООО Ромашка-2",
+      "comment": "Нужно перевезти груз из Москвы в Санкт-Петербург",
+      "date": "12.04.2024, 22:09",
+      "applicationNumber": "4",
+      "id": "221578",
+      "status": "Новая"
+    },
+    {
+      "atiCode": "67891",
+      "carrierFullName": "Петрова Елена Петровна",
+      "carrierPhone": "+7 (922) 151-10-21",
+      "clientCompanyName": "ООО Львиная доля-2",
+      "comment": "Нужно перевезти груз из Казани в Екатеринбург",
+      "date": "18.04.2024, 19:43",
+      "id": "765470",
+      "status": "В работе",
+      "applicationNumber": "5"
+    },
+    {
+      "atiCode": "111214",
+      "carrierFullName": "Сидорова Мария Сергеевна",
+      "carrierPhone": "+7 (928) 123-32-23",
+      "clientCompanyName": "ООО Солнечный ветер-2",
+      "comment": "Нужно перевезти груз из Краснодара в Ростов-на-Дону",
+      "date": "21.04.2024, 15:25",
+      "id": "120947",
+      "applicationNumber": "6",
+      "status": "Завершено"
+    },
+    {
+      "atiCode": "456873",
+      "carrierFullName": "Карасева Ольга Иннокентьевна",
+      "carrierPhone": "+7 (982) 313-96-47",
+      "clientCompanyName": "ОАО Петровские Дачи-2",
+      "comment": "Нужно забрать груз из Тайланда и привезти его в Кисловодск",
+      "date": "28.04.2024, 12:14",
+      "id": "120742",
+      "applicationNumber": "7",
+      "status": "Новая"
+    },
+    {
+      "id": "230845",
+      "date": "01.05.2024, 09:09",
+      "clientCompanyName": "ИП Петровские Дачи 33333",
+      "carrierFullName": "Карасёв Ivan Львович",
+      "carrierPhone": "+7 (919) 325-26-49",
+      "comment": "Нужно забрать груз из Тайланда и привезти его в Кисловодск",
+      "status": "В рвботе",
+      "atiCode": "111213",
+      "applicationNumber": "8"
+    },
+    {
+      "id": "123042",
+      "atiCode": "23233",
+      "carrierFullName": "Петр Петрвов Петрович",
+      "carrierPhone": "+7 (950) 875-21-40",
+      "clientCompanyName": "Влогодад",
+      "comment": "Нужно забрать груз из Франциии привезти его в Кисловодск\"",
+      "date": "21.12.2024, 12:14",
+      "applicationNumber": "9",
+      "status": "В работе"
+    },
+    {
+      "id": "1318",
+      "atiCode": "7383939",
+      "carrierFullName": "ПупкинВасилийПетрович",
+      "carrierPhone": "+7 (999) 942-23-41",
+      "clientCompanyName": "ООО ТЕХНОСТРОЙ",
+      "comment": "без комментариев",
+      "date": "09.11.2000, 23:45",
+      "applicationNumber": "10",
+      "status": "Новая"
+    },
+    {
+      "id": "2598",
+      "atiCode": "1231231",
+      "carrierFullName": "Морозов Васька Молодец",
+      "carrierPhone": "+7 (222) 112-33-21",
+      "clientCompanyName": "ОООО Печь",
+      "comment": "не исправил",
+      "date": "07.05.2024, 00:17",
+      "applicationNumber": "11",
+      "status": "Новая"
+    }
+  ]
+}

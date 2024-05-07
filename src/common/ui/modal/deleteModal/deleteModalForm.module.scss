@@ -1,0 +1,65 @@
+.modal {
+  position: fixed;
+  z-index: 4;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+
+  //opacity: 0.9;
+  background-color: #250a0a;
+  border-radius: 5px;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
+}
+
+.modalTitle {
+  margin: 10px 0 40px;
+  font-weight: bold;
+}
+
+.modalContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.modalForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.modalInput {
+  margin-bottom: 10px;
+}
+
+.contentWrapper {
+  position: fixed;
+  z-index: 5;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+
+  box-sizing: border-box;
+  width: 80%;
+  max-width: 532px;
+  max-height: calc(100% - 32px);
+  padding: 24px;
+
+  background-color: var(--color-dark-700);
+  border: 1px solid var(--color-dark-500);
+  border-radius: 2px;
+
+  animation: _contentShow_1xlsh_1 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btnGroup {
+  display: flex;
+  justify-content: space-between;
+}
