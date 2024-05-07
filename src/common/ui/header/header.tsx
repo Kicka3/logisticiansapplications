@@ -10,7 +10,7 @@ export const Header = ({ className, ...rest }: Props) => {
   return (
     <header className={s.headerWrapper}>
       <div className={s.header} {...rest}>
-        <Link to={'/'}>Header logo</Link>
+        <Link to={'/'}>Logisticts app</Link>
       </div>
     </header>
   )

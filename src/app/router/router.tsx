@@ -10,10 +10,6 @@ const router = createBrowserRouter([
     children: [
       {
         element: <TableRow />,
-        // element: <TableRowACt />,
-        // element: <SelectionTable />,
-        // element: <SelectionTable />,
-        // element: <MyTableSort />,
         path: '/',
       },
       {
