@@ -31,7 +31,7 @@ export const UpdateApplication = ({
     let applicationStatus: string
 
     if (typeForm === ModeForm.UPDATE) {
-      applicationStatus = data.statusApp
+      applicationStatus = data.statusApp!
     } else {
       applicationStatus = STATUS_NEW
     }

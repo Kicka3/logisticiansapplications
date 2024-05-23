@@ -7,14 +7,12 @@ type Props = {
   isDeleteModalOpen: boolean
   onDeleteApplication: () => void
   setIsDeleteModalOpen: (value: boolean) => void
-  title: string
 }
 
 export const DeleteModalForm = ({
   isDeleteModalOpen,
   onDeleteApplication,
   setIsDeleteModalOpen,
-  title,
 }: Props) => {
   const deleteApplicationHandler = () => {
     onDeleteApplication()
@@ -38,9 +36,7 @@ export const DeleteModalForm = ({
           open={isDeleteModalOpen}
         >
           <div className={s.contentWrapper}>
-            <Typography
-              variant={'body1'}
-            >{`Вы действительно хотите удалить заявку № ${title} ?`}</Typography>
+            <Typography variant={'body1'}>{`Вы действительно хотите удалить заявку ?`}</Typography>
             <div className={s.modalContent}>
               <div className={s.btnGroup}>
                 <Button
@@ -53,7 +49,6 @@ export const DeleteModalForm = ({
                 </Button>
                 <Button
                   className={s.modalBtn}
-                  // onClick={deleteApplicationHandler}
                   onClick={deleteApplicationHandler}
                   size={'l'}
                   view={'outlined-action'}

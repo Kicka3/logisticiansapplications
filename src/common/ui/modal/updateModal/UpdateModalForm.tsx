@@ -7,8 +7,6 @@ import { Typography } from '@/common/ui/typography'
 import { Button, Modal, ThemeProvider } from '@gravity-ui/uikit'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-import s from './UpdateModalForm.module.scss'
-
 type Props = {
   disabled?: boolean
   onSubmitApplication?: (data: AddFormValues) => void
@@ -59,20 +57,16 @@ export const AddModalForm = ({ onSubmitApplication, title }: Props) => {
         <Modal
           aria-label={'addNewApplication'}
           autoFocus
-          className={s.modal}
           contentOverflow={'visible'}
           onClose={handleCloseModal}
           open={isOpen}
         >
-          <div className={s.contentWrapper}>
-            <Typography className={s.modalTitle} variant={'body1'}>
-              {title}
-            </Typography>
-            <div className={s.modalContent}>
-              <form className={s.modalForm} onSubmit={handleSubmit(onSubmit)}>
+          <div>
+            <Typography variant={'body1'}>{title}</Typography>
+            <div>
+              <form onSubmit={handleSubmit(onSubmit)}>
                 <ControlledTextField
                   control={control}
-                  // disabled={disabled}
                   errorMessage={errors.applicationNumber?.message}
                   label={'Номер завяки'}
                   name={'applicationNumber'}
@@ -81,7 +75,6 @@ export const AddModalForm = ({ onSubmitApplication, title }: Props) => {
                 />
                 <ControlledTextField
                   control={control}
-                  // disabled={disabled}
                   errorMessage={errors.date?.message}
                   label={'Дата получения заявки от клиента (дд.мм.гггг чч:мм)'}
                   name={'date'}
@@ -90,7 +83,6 @@ export const AddModalForm = ({ onSubmitApplication, title }: Props) => {
                 />
                 <ControlledTextField
                   control={control}
-                  // disabled={disabled}
                   errorMessage={errors.companyName?.message}
                   label={'Название фирмы клиента'}
                   name={'companyName'}
@@ -98,7 +90,6 @@ export const AddModalForm = ({ onSubmitApplication, title }: Props) => {
                 />
                 <ControlledTextField
                   control={control}
-                  // disabled={disabled}
                   errorMessage={errors.CarriersFullName?.message}
                   label={'ФИО перевозчика'}
                   name={'CarriersFullName'}
@@ -123,16 +114,14 @@ export const AddModalForm = ({ onSubmitApplication, title }: Props) => {
                 />
                 <ControlledTextField
                   control={control}
-                  // disabled={disabled}
                   errorMessage={errors.ATICode?.message}
                   label={'ATI код сети перевозчика'}
                   name={'ATICode'}
                   type={'number'}
                   variant={'default'}
                 />
-                <div className={s.btnGroup}>
+                <div>
                   <Button
-                    className={s.modalBtn}
                     onClick={handleCloseModal}
                     size={'l'}
                     type={'reset'}
@@ -140,12 +129,7 @@ export const AddModalForm = ({ onSubmitApplication, title }: Props) => {
                   >
                     Отмена
                   </Button>
-                  <Button
-                    className={s.modalBtn}
-                    size={'l'}
-                    type={'submit'}
-                    view={'outlined-action'}
-                  >
+                  <Button size={'l'} type={'submit'} view={'outlined-action'}>
                     Отправить
                   </Button>
                 </div>

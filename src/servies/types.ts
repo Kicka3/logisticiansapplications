@@ -8,7 +8,7 @@ export type Application = {
   clientCompanyName: string
   comment: string
   date: string
-  id: string
+  id?: string
   status: string
 }
 

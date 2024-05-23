@@ -149,8 +149,6 @@ export const ApplicationPage = () => {
         isDeleteModalOpen={isDeleteModalOpen}
         onDeleteApplication={onDeleteApplication}
         setIsDeleteModalOpen={setIsDeleteModalOpen}
-        // title={DeleteTitleAppModalForm}
-        title={application?.applicationNumber || ''}
       />
     </div>
   )

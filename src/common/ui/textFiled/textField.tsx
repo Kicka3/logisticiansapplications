@@ -97,7 +97,6 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
             placeholder={placeholder}
             ref={forwardedRef}
             type={inputType}
-            // value={inputValue}
           />
           {isShowClearButton && (
             <button className={classNames.buttonIcon} onClick={clearValue}>
